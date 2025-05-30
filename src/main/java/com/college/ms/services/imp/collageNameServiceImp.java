@@ -1,12 +1,14 @@
 package com.college.ms.services.imp;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.college.ms.entities.CollageName;
+import com.college.ms.exceptions.ResourceNotFound;
 import com.college.ms.payloads.collageNameDto;
 import com.college.ms.respositores.collageNameRepo;
 import com.college.ms.services.collageNameService;
@@ -22,31 +24,50 @@ public class collageNameServiceImp implements collageNameService {
 
 	@Override
 	public collageNameDto createCollageNameDto(collageNameDto collageNameDto) {
-		// TODO Auto-generated method stub
-		return null;
+
+		CollageName collageName = this.dtoTOCollageName(collageNameDto);
+		CollageName saveCollageName = this.collageNameRepo.save(collageName);
+
+		return this.collageNameToDto(saveCollageName);
 	}
 
 	@Override
 	public collageNameDto updateCollageNameDto(collageNameDto collageNameDto, Long collageId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		CollageName collageName = this.collageNameRepo.findById(collageId)
+				.orElseThrow(() -> new ResourceNotFound("CollageName", "CollageId", collageId));
+
+		collageName.setCollageName(collageNameDto.getCollageName());
+
+		CollageName updateCollageName = this.collageNameRepo.save(collageName);
+		collageNameDto collageNameDto1 = this.collageNameToDto(updateCollageName);
+		return collageNameDto1;
 	}
 
 	@Override
 	public collageNameDto getCollageNameDto(Long collageId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		CollageName collageName = this.collageNameRepo.findById(collageId)
+				.orElseThrow(() -> new ResourceNotFound("CollageName", "CollageId", collageId));
+
+		return this.collageNameToDto(collageName);
 	}
 
 	@Override
 	public List<collageNameDto> getAllCollageNameDtos() {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<CollageName> collageNames = this.collageNameRepo.findAll();
+		List<collageNameDto> collageNameDtos = collageNames.stream()
+				.map((collageName) -> this.collageNameToDto(collageName)).collect(Collectors.toList());
+		return collageNameDtos;
 	}
 
 	@Override
 	public void deleteCollageNameDto(Long collageId) {
-		// TODO Auto-generated method stub
+		CollageName collageName = this.collageNameRepo.findById(collageId)
+				.orElseThrow(() -> new ResourceNotFound("CollageName", "CollageId", collageId));
+
+		this.collageNameRepo.delete(collageName);
 
 	}
 
