@@ -1,6 +1,7 @@
 package com.college.ms.exceptions;
 
 import lombok.Getter;
+
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
