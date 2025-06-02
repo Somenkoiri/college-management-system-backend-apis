@@ -57,7 +57,7 @@ public class collageNameController {
 
 		return ResponseHandler.responseBuilder("Request Collage Name details are given hear", HttpStatus.OK.value(),
 				this.collageNameService.getCollageNameDto(collageId));
-	}
+	} 
 
 	// GET ALL
 	@GetMapping("")

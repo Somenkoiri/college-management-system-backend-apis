@@ -35,4 +35,7 @@ public class CollageName {
 	
 	@OneToMany(mappedBy = "collageName")
 	private List<Principal> principals = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "collageName")
+	private List<Sir> sirs = new ArrayList<>();
 }
